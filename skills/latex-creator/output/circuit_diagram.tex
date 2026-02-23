@@ -1,0 +1,128 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage[utf8]{vietnam}
+\usetikzlibrary{calc,arrows.meta,positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+    thick,
+    % === Component Definitions using pics ===
+    % Resistor Pic
+    pics/resistor/.style={
+        code={
+            \draw[line width=1pt] (0,0) -- (0.2,0)
+                -- (0.3,0.25) -- (0.5,-0.25) 
+                -- (0.7,0.25) -- (0.9,-0.25)
+                -- (1.1,0.25) -- (1.3,-0.25)
+                -- (1.4,0) -- (1.6,0);
+            \coordinate (-mid) at (0.8,0.3); % Label position
+        }
+    },
+    % Bulb Pic
+    pics/bulb/.style={
+        code={
+            \draw[line width=1pt] (0,0) -- (0.5,0); % Lead in
+            \draw[fill=white, line width=1pt] (0.8,0) circle (0.3cm);
+            \draw[line width=0.8pt] (0.6,-0.2) -- (1.0,0.2); % Cross 1
+            \draw[line width=0.8pt] (0.6,0.2) -- (1.0,-0.2); % Cross 2
+            \draw[line width=1pt] (1.1,0) -- (1.6,0); % Lead out
+            \coordinate (-mid) at (0.8,0.4); % Label position
+        }
+    },
+    % Source Pic (Battery)
+    pics/source/.style={
+        code={
+            \draw[line width=1pt] (0,0) -- (0,0.3); % Wire
+            \draw[line width=1.5pt] (-0.3,0.3) -- (0.3,0.3); % Short thick plate (-)
+            \draw[line width=1pt] (0,0.7) -- (0,1.0); % Wire
+            \draw[line width=1pt] (-0.6,0.7) -- (0.6,0.7); % Long thin plate (+)
+            % Polarity signs
+            \node[right] at (0.6,0.7) {$+$};
+            \node[right] at (0.3,0.3) {$-$};
+            \coordinate (-mid) at (-0.7,0.5); % Label position
+        }
+    },
+    % Switch Pic (Open)
+    pics/switch/.style={
+        code={
+            \draw[line width=1pt] (0,0) -- (0.2,0);
+            \draw[line width=1pt] (0.2,0) circle (1.5pt); % Pivot
+            \draw[line width=1pt] (0.2,0) -- (1.0,0.5); % Blade
+            \draw[line width=1pt] (1.0,0) circle (1.5pt); % Contact
+            \draw[line width=1pt] (1.0,0) -- (1.2,0);
+            \coordinate (-mid) at (0.6,0.6); % Label position
+        }
+    }
+]
+
+    % === Circuit Layout ===
+    
+    % Coordinates
+    \coordinate (A) at (0,0);       % Bottom Left
+    \coordinate (S_pos) at (0,3);   % Source position (mid left)
+    \coordinate (B) at (0,6);       % Top Left
+    
+    \coordinate (C) at (3,6);       % Top junction (Start of parallel)
+    \coordinate (D) at (3,0);       % Bottom junction (End of parallel)
+    
+    \coordinate (E) at (6,6);       % Branch 1 Top
+    \coordinate (F) at (6,0);       % Branch 1 Bottom
+    
+    \coordinate (G) at (9,6);       % Branch 2 Top
+    \coordinate (H) at (9,0);       % Branch 2 Bottom
+
+    % === Main Loop Wires ===
+    % Left vertical wire with Source
+    \draw (A) -- (0,2);
+    \pic[rotate=0] (E_source) at (0,2) {source}; 
+    \draw (0,3) -- (B);
+    
+    % Top wire with Switch
+    \draw (B) -- (1,6);
+    \pic (K) at (1,6) {switch};
+    \draw (2.2,6) -- (C);
+    
+    % Bottom wire
+    \draw (A) -- (D);
+
+    % === Branch 1 ===
+    \draw (C) -- (E);
+    % Resistor 1
+    \pic[rotate=-90] (R1) at (6,5.5) {resistor}; % Resistor vertical down
+    % Wire between R1 and Bulb1
+    \draw (6,3.9) -- (6,3); 
+    % Bulb 1
+    \pic[rotate=-90] (D1) at (6,3) {bulb};
+    % Wire to bottom
+    \draw (6,1.4) -- (F);
+    
+    % === Branch 2 ===
+    \draw (C) -- (G);
+    % Resistor 2
+    \pic[rotate=-90] (R2) at (9,5.5) {resistor}; 
+    % Wire between R2 and Bulb2
+    \draw (9,3.9) -- (9,3);
+    % Bulb 2
+    \pic[rotate=-90] (D2) at (9,3) {bulb};
+    % Wire to bottom
+    \draw (9,1.4) -- (H);
+    
+    % Connection at bottom
+    \draw (H) -- (D);
+    \draw (F) -- (D);
+
+    % === Labels ===
+    \node[left] at (E_source-mid) {$\xi, r$};
+    \node[above] at (K-mid) {$K$};
+    
+    \node[right] at (R1-mid) {$R_1$};
+    \node[right] at (D1-mid) {$Đ_1$};
+    
+    \node[right] at (R2-mid) {$R_2$};
+    \node[right] at (D2-mid) {$Đ_2$};
+    
+    % Nodes dots
+    \fill (C) circle (2pt) node[above] {$M$};
+    \fill (D) circle (2pt) node[below] {$N$};
+
+\end{tikzpicture}
+\end{document}
