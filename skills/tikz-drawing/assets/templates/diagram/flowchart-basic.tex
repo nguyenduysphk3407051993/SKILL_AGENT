@@ -1,0 +1,76 @@
+% Template: Sơ đồ flowchart cơ bản
+% Dùng cho: giải thuật, quy trình, lưu đồ
+% --------------------------------------------------------
+\documentclass[border=10pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{shapes.geometric, arrows.meta, calc}
+
+\begin{document}
+\begin{tikzpicture}[
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    node distance=1.5cm,
+    % ── Định nghĩa style các khối ──────────────────────
+    start/.style={
+        draw, rounded corners=10pt,
+        fill=mauchinh!15, thick,
+        minimum width=3cm, minimum height=0.8cm,
+        text centered
+    },
+    process/.style={
+        draw, rectangle,
+        fill=white, thick,
+        minimum width=3cm, minimum height=0.8cm,
+        text centered
+    },
+    decision/.style={
+        draw, diamond,
+        fill=mauphu!20, thick,
+        minimum width=2.5cm, minimum height=1cm,
+        text centered, aspect=2
+    },
+    io/.style={
+        draw, trapezium,
+        trapezium left angle=70, trapezium right angle=110,
+        fill=mauphu!10, thick,
+        minimum width=3cm, minimum height=0.8cm,
+        text centered
+    },
+    arrow/.style={thick, ->}
+]
+    % ── Các khối ─────────────────────────────────────────
+    \path (0, 0)    node[start]    (start)   {Bắt đầu};
+    \path (0,-1.8)  node[io]       (input)   {Nhập dữ liệu};
+    \path (0,-3.6)  node[process]  (proc)    {Xử lý};
+    \path (0,-5.4)  node[decision] (cond)    {Điều kiện?};
+    \path (3,-5.4)  node[process]  (yes)     {Xử lý (Đúng)};
+    \path (0,-7.2)  node[io]       (output)  {Xuất kết quả};
+    \path (0,-9.0)  node[start]    (stop)    {Kết thúc};
+
+    % ── Mũi tên nối ──────────────────────────────────────
+    \draw[arrow] (start)  -- (input);    % Bắt đầu → Nhập
+    \draw[arrow] (input)  -- (proc);     % Nhập → Xử lý
+    \draw[arrow] (proc)   -- (cond);     % Xử lý → Điều kiện
+    \draw[arrow] (cond)   -- node[above] {Đúng} (yes);    % → Nhánh đúng
+    \draw[arrow] (cond)   -- node[right] {Sai}  (output); % → Xuất kết quả
+    \draw[arrow] (yes)    |- (output);   % Nhánh đúng → Xuất
+    \draw[arrow] (output) -- (stop);     % Xuất → Kết thúc
+\end{tikzpicture}
+\end{document}

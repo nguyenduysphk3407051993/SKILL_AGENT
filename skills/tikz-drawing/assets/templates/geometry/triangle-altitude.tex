@@ -1,0 +1,72 @@
+% Template: Tam giác ABC với đường cao AH
+% Dùng cho: tính diện tích, đường cao, hệ thức lượng
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, angles, quotes, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1.2,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    thick,
+]
+    % Đỉnh A
+    \path (1.5, 3) coordinate (A);
+    % Đỉnh B
+    \path (0,   0) coordinate (B);
+    % Đỉnh C
+    \path (4,   0) coordinate (C);
+    % H: chân đường cao từ A xuống BC
+    \path ($(B)!(A)!(C)$) coordinate (H);
+
+    % Ba cạnh tam giác
+    \draw (A) -- (B) -- (C) -- cycle;
+
+    % Đường cao AH (nét đứt)
+    \draw[dashed, thin] (A) -- (H);
+
+    % Cạnh ký hiệu góc vuông = 0.18
+    \pgfmathsetmacro{\sq}{0.18}
+    % Điểm phụ dịch theo BC
+    \path ($(H) + (\sq, 0)$) coordinate (Hx);
+    % Điểm phụ dịch vuông góc BC
+    \path ($(H) + (0, \sq)$) coordinate (Hy);
+    % Điểm phụ góc chéo
+    \path ($(H) + (\sq, \sq)$) coordinate (Hxy);
+    % Ký hiệu góc vuông tại H
+    \draw[thin] (Hx) -- (Hxy) -- (Hy);
+
+    % Nhãn đỉnh A
+    \path (A) node[above] {$A$};
+    % Nhãn đỉnh B
+    \path (B) node[below left] {$B$};
+    % Nhãn đỉnh C
+    \path (C) node[below right] {$C$};
+    % Nhãn chân đường cao H
+    \path (H) node[below] {$H$};
+
+    % Điểm tại A, B, C, H
+    \foreach \p in {A, B, C, H} {
+        \fill (\p) circle (2pt);
+    }
+\end{tikzpicture}
+\end{document}

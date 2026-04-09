@@ -1,0 +1,115 @@
+\documentclass[border=10pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tgadventor}
+\usepackage{tikz}
+\usetikzlibrary{calc, angles, quotes, arrows.meta}
+
+% =====================================================
+% Hình minh họa: Tiếp tuyến đường tròn — Bài 3
+% O = (0,0), R = 2, A = (-3.5, 0) ngoài đường tròn
+% B: tiếp điểm phía trên — OB ⊥ AB
+% C: điểm trên đường tròn phía dưới — AC = AB
+% angB = acos(-R/OA) = acos(-2/3.5) ≈ 124.85°
+% =====================================================
+
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+
+% Font qag đậm — dùng cho mọi nhãn
+\newcommand{\qagbf}{\fontfamily{qag}\fontseries{b}\selectfont}
+
+\tikzset{
+    % Nhãn tên điểm: qag đậm cỡ small
+    nhan diem/.style={font=\qagbf\small},
+    % Nhãn tên cạnh: qag đậm cỡ scriptsize
+    nhan canh/.style={font=\qagbf\scriptsize},
+    % Góc vuông
+    goc vuong/.style={
+        draw=mauvien,
+        thick,
+        angle radius=0.20cm,
+    },
+}
+
+\begin{document}
+\begin{tikzpicture}[
+    declare function={
+        % angB: góc OB với trục Ox — điều kiện OB ⊥ AB
+        % cos(angB) = -R/OA = -2/3.5
+        angB = acos(-2/3.5);
+    },
+    line join=round,
+    line cap=round,
+    every node/.style={font=\qagbf\small},
+    >=Stealth,
+]
+
+% --- Hằng số ---
+% R = 2: bán kính đường tròn
+\pgfmathsetmacro{\R}{2}
+
+% --- Điểm cơ sở ---
+% O: tâm đường tròn
+\path (0,0) coordinate (O);
+% A: điểm ngoài, trên trục Ox âm
+\path (-3.5,0) coordinate (A);
+
+% --- B và C dùng tọa độ cực từ O ---
+% B: tiếp điểm phía trên, góc angB
+\path (O) ++ ({angB}:\R) coordinate (B);
+% C: phía dưới, đối xứng B qua OA, AC = AB
+\path (O) ++ ({-angB}:\R) coordinate (C);
+
+% ======= THỨ TỰ VẼ =======
+
+% --- 1. Đường phụ nét đứt ---
+% Đoạn OA tham chiếu
+\draw[mauvien!50, thin, dashed] (O) -- (A);
+% Bán kính OB
+\draw[mauchinh!60, thin, dashed] (O) -- (B);
+% Bán kính OC
+\draw[mauchinh!60, thin, dashed] (O) -- (C);
+
+% --- 2. Đường tròn (O; R) ---
+\draw[mauchinh, thick] (O) circle (\R);
+
+% --- 3. Đường chính ---
+% Tiếp tuyến AB
+\draw[maunoibat, very thick] (A) -- (B);
+% Đoạn AC = AB
+\draw[mauphu, very thick] (A) -- (C);
+
+% --- 4. Góc vuông tại B: OB ⊥ AB ---
+\pic[goc vuong] {right angle = O--B--A};
+
+% --- 5. Vòng lặp: vẽ điểm + nhãn tên đỉnh ---
+% \t = tên đỉnh, \col = màu, \g = góc hướng nhãn (tọa độ cực)
+\foreach \t/\col/\r/\g in {
+    O/mauchinh/1.5pt/-45,
+    A/mauvien/1.5pt/180,
+    B/maunoibat/1.8pt/125,
+    C/mauphu/1.8pt/235
+}{
+    % Chấm điểm
+    \fill[\col] (\t) circle (\r);
+    % Nhãn tên đỉnh: shift theo góc cực \g, khoảng 7pt
+    \path (\t) node[\col, nhan diem, shift={(\g:7pt)}] {\t};
+}
+
+% --- 6. Nhãn tên cạnh — không dùng $...$ ---
+% Nhãn R trên bán kính OB
+\path (O) -- (B)
+    node[midway, nhan canh, mauchinh, shift={(50:7pt)}] {R};
+% Nhãn AB
+\path (A) -- (B)
+    node[midway, nhan canh, maunoibat, shift={(125:7pt)}] {AB};
+% Nhãn AC = AB
+\path (A) -- (C)
+    node[midway, nhan canh, mauphu, shift={(235:7pt)}] {AC = AB};
+
+\end{tikzpicture}
+\end{document}

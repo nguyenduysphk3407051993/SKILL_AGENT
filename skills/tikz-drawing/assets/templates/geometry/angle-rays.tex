@@ -1,0 +1,64 @@
+% Template: Góc AOB với hai tia
+% Dùng cho: đo góc, tia phân giác, góc kề bù, góc đối đỉnh
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, angles, quotes, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1.2,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    thick,
+]
+    % Độ dài tia
+    \pgfmathsetmacro{\raylen}{2.5}
+    % Góc AOB = 55°
+    \pgfmathsetmacro{\angAOB}{55}
+
+    % Gốc góc O
+    \path (0, 0) coordinate (O);
+    % Tia OA nằm ngang
+    \path (\raylen, 0) coordinate (OA);
+    % Tia OB tại góc 55° so với OA
+    \path (\angAOB:\raylen) coordinate (OB);
+
+    % Tia OA
+    \draw[->] (O) -- (OA);
+    % Tia OB
+    \draw[->] (O) -- (OB);
+
+    % Cung góc alpha với nhãn
+    \pic[draw, angle radius=0.7cm,
+         angle eccentricity=1.4,
+         "$\alpha$"] {angle = OA--O--OB};
+
+    % Nhãn gốc O
+    \path (O)  node[below left] {$O$};
+    % Nhãn điểm A
+    \path (OA) node[right] {$A$};
+    % Nhãn điểm B
+    \path (OB) node[above] {$B$};
+
+    % Điểm tại gốc O
+    \fill (O) circle (2pt);
+\end{tikzpicture}
+\end{document}

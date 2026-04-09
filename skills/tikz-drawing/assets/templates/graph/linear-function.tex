@@ -1,0 +1,86 @@
+% Template: Đồ thị hai hàm bậc nhất giao nhau
+% y1 = 2x - 1, y2 = -x + 3, giao tại G(4/3; 5/3)
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    % Khai báo hai hàm số bằng declare function
+    declare function={
+        % Hàm bậc nhất thứ nhất: y = 2x - 1
+        f(\x) = 2*\x - 1;
+        % Hàm bậc nhất thứ hai: y = -x + 3
+        g(\x) = -\x + 3;
+    },
+    scale=0.9,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small, mauvien},
+]
+    % Giới hạn vẽ
+    \pgfmathsetmacro{\xmin}{-1}
+    \pgfmathsetmacro{\xmax}{3.5}
+    \pgfmathsetmacro{\ymin}{-2}
+    \pgfmathsetmacro{\ymax}{4}
+    % x giao = 4/3 (từ 2x-1 = -x+3)
+    \pgfmathsetmacro{\xgiao}{4/3}
+    % y giao = 5/3
+    \pgfmathsetmacro{\ygiao}{5/3}
+
+    % Trục Ox
+    \draw[mauvien, ->] (\xmin-0.3, 0) -- (\xmax+0.3, 0) node[right] {$x$};
+    % Trục Oy
+    \draw[mauvien, ->] (0, \ymin-0.3) -- (0, \ymax+0.3) node[above] {$y$};
+    % Gốc tọa độ O
+    \path (0,0) node[below left] {$O$};
+
+    % Vạch và nhãn trục x
+    \foreach \x in {-1,1,2,3} {
+        \draw[mauvien] (\x, 2pt) -- (\x, -2pt);
+        \path (\x,0) node[below] {$\x$};
+    }
+
+    % Vạch và nhãn trục y
+    \foreach \y in {-1,1,2,3} {
+        \draw[mauvien] (2pt,\y) -- (-2pt,\y);
+        \path (0,\y) node[left] {$\y$};
+    }
+
+    % Đường thẳng y = f(x) = 2x - 1
+    \draw[mauchinh, thick]
+        plot[domain=\xmin:\xmax, variable=\x] (\x, {f(\x)});
+    % Nhãn d1
+    \path (\xmax, {f(\xmax)}) node[mauchinh, right] {$y = 2x-1$};
+
+    % Đường thẳng y = g(x) = -x + 3
+    \draw[maunoibat, thick]
+        plot[domain=\xmin:\xmax, variable=\x] (\x, {g(\x)});
+    % Nhãn d2
+    \path (\xmin, {g(\xmin)}) node[maunoibat, left] {$y = {-x}+3$};
+
+    % Giao điểm G(4/3; 5/3)
+    \path (\xgiao, \ygiao) coordinate (G);
+    \fill[mauphu] (G) circle (2.5pt);
+    % Nhãn giao điểm
+    \path (G) node[above right] {$G\!\left(\frac{4}{3};\frac{5}{3}\right)$};
+
+    % Đường chiếu giao điểm xuống Ox
+    \draw[mauvien!40, dotted, thin] (\xgiao, 0) -- (G);
+    % Đường chiếu giao điểm sang Oy
+    \draw[mauvien!40, dotted, thin] (0, \ygiao) -- (G);
+\end{tikzpicture}
+\end{document}

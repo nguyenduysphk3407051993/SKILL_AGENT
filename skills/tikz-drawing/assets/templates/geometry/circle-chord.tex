@@ -1,0 +1,69 @@
+% Template: Đường tròn tâm O bán kính R với dây cung AB
+% Dùng cho: hình học đường tròn, góc nội tiếp, tiếp tuyến
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, angles, quotes, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1.3,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    thick,
+]
+    % Bán kính R = 2
+    \pgfmathsetmacro{\R}{2}
+    % Góc của điểm A trên đường tròn
+    \pgfmathsetmacro{\angA}{130}
+    % Góc của điểm B trên đường tròn
+    \pgfmathsetmacro{\angB}{30}
+
+    % Tâm đường tròn O
+    \path (0, 0) coordinate (O);
+    % Điểm A trên đường tròn tại góc 130°
+    \path (\angA:\R) coordinate (A);
+    % Điểm B trên đường tròn tại góc 30°
+    \path (\angB:\R) coordinate (B);
+
+    % Đường tròn tâm O bán kính R
+    \draw (O) circle (\R);
+
+    % Dây cung AB
+    \draw[mauchinh] (A) -- (B);
+
+    % Bán kính OA (nét đứt)
+    \draw[dashed, thin] (O) -- (A);
+    % Bán kính OB (nét đứt)
+    \draw[dashed, thin] (O) -- (B);
+
+    % Nhãn tâm O
+    \path (O) node[below left] {$O$};
+    % Nhãn điểm A
+    \path (A) node[above left] {$A$};
+    % Nhãn điểm B
+    \path (B) node[right] {$B$};
+
+    % Điểm tại O, A, B
+    \foreach \p in {O, A, B} {
+        \fill (\p) circle (2pt);
+    }
+\end{tikzpicture}
+\end{document}

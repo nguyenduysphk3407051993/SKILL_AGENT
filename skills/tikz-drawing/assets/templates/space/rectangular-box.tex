@@ -1,0 +1,95 @@
+% Template: Hình hộp chữ nhật ABCD-A'B'C'D'
+% Dùng cho: hình học không gian, thể tích, đường chéo
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    thick,
+]
+    % Chiều dài (trục x)
+    \pgfmathsetmacro{\a}{3.5}
+    % Chiều sâu (phối cảnh xiên)
+    \pgfmathsetmacro{\b}{1.2}
+    % Chiều cao (trục y)
+    \pgfmathsetmacro{\c}{2.2}
+    % Góc phối cảnh xiên
+    \pgfmathsetmacro{\ang}{25}
+    % Dịch x theo chiều sâu
+    \pgfmathsetmacro{\dx}{\b*cos(\ang)}
+    % Dịch y theo chiều sâu
+    \pgfmathsetmacro{\dy}{\b*sin(\ang)}
+
+    % Đỉnh A: trước trái dưới
+    \path (0,    0)  coordinate (A);
+    % Đỉnh B: trước phải dưới
+    \path (\a,   0)  coordinate (B);
+    % Đỉnh C: trước phải trên
+    \path (\a,   \c) coordinate (C);
+    % Đỉnh D: trước trái trên
+    \path (0,    \c) coordinate (D);
+    % Đỉnh A': sau trái dưới
+    \path ($(A)+(\dx,\dy)$) coordinate (A1);
+    % Đỉnh B': sau phải dưới
+    \path ($(B)+(\dx,\dy)$) coordinate (B1);
+    % Đỉnh C': sau phải trên
+    \path ($(C)+(\dx,\dy)$) coordinate (C1);
+    % Đỉnh D': sau trái trên
+    \path ($(D)+(\dx,\dy)$) coordinate (D1);
+
+    % Cạnh AA' khuất
+    \draw[dashed, thin] (A)  -- (A1);
+    % Cạnh A'B' khuất
+    \draw[dashed, thin] (A1) -- (B1);
+    % Cạnh A'D' khuất
+    \draw[dashed, thin] (A1) -- (D1);
+
+    % Mặt trước ABCD
+    \draw (A) -- (B) -- (C) -- (D) -- cycle;
+    % Mặt phải BB'C'C
+    \draw (B)  -- (B1) -- (C1) -- (C);
+    % Mặt trên DD'C'
+    \draw (D)  -- (D1) -- (C1);
+    % Cạnh B'A' phía sau thấy
+    \draw (B1) -- (A1);
+
+    % Nhãn đỉnh A
+    \path (A)  node[below left]  {$A$};
+    % Nhãn đỉnh B
+    \path (B)  node[below right] {$B$};
+    % Nhãn đỉnh C
+    \path (C)  node[right]       {$C$};
+    % Nhãn đỉnh D
+    \path (D)  node[left]        {$D$};
+    % Nhãn đỉnh A'
+    \path (A1) node[left]        {$A'$};
+    % Nhãn đỉnh B'
+    \path (B1) node[below right] {$B'$};
+    % Nhãn đỉnh C'
+    \path (C1) node[above right] {$C'$};
+    % Nhãn đỉnh D'
+    \path (D1) node[above left]  {$D'$};
+\end{tikzpicture}
+\end{document}

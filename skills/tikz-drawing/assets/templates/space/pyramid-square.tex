@@ -1,0 +1,104 @@
+% Template: Hình chóp tứ giác đều S.ABCD
+% Dùng cho: thể tích hình chóp, đường cao, mặt bên
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+{mauchinh} {HTML}{1565C0}
+{mauphu}   {HTML}{43A047}
+{maunoibat}{HTML}{E53935}
+{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=1,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small},
+    thick,
+]
+    % Cạnh đáy
+    \pgfmathsetmacro{\a}{3}
+    % Chiều cao hình chóp
+    \pgfmathsetmacro{\h}{3.5}
+    % Góc phối cảnh đáy
+    \pgfmathsetmacro{\ang}{20}
+    % Dịch x theo chiều sâu
+    \pgfmathsetmacro{\dx}{\a*0.5*cos(\ang)}
+    % Dịch y theo chiều sâu
+    \pgfmathsetmacro{\dy}{\a*0.5*sin(\ang)}
+
+    % Đỉnh A: trước trái đáy
+    \path (0,  0) coordinate (A);
+    % Đỉnh B: trước phải đáy
+    \path (\a, 0) coordinate (B);
+    % Đỉnh C: sau phải đáy
+    \path ($(B) + (\dx, \dy)$) coordinate (C);
+    % Đỉnh D: sau trái đáy
+    \path ($(A) + (\dx, \dy)$) coordinate (D);
+    % O': tâm đáy ABCD (giao hai đường chéo)
+    \path ($(A)!0.5!(C)$) coordinate (O');
+    % S: đỉnh chóp nằm thẳng trên tâm O'
+    \path ($(O') + (0, \h)$) coordinate (S);
+
+    % Cạnh ký hiệu góc vuông
+    \pgfmathsetmacro{\sq}{0.15}
+    % Điểm phụ dịch theo phương ngang
+    \path ($(O') + (\sq, 0)$) coordinate (Ox);
+    % Điểm phụ dịch lên trên
+    \path ($(O') + (0, \sq)$) coordinate (Oy);
+    % Điểm phụ góc chéo
+    \path ($(O') + (\sq, \sq)$) coordinate (Oxy);
+    % Ký hiệu góc vuông SO' với đáy
+    \draw[thin, dashed] (Ox) -- (Oxy) -- (Oy);
+
+    % Cạnh AD khuất
+    \draw[dashed, thin] (A) -- (D);
+    % Cạnh DC khuất
+    \draw[dashed, thin] (D) -- (C);
+    % Đường cao SO' khuất
+    \draw[dashed, thin] (O') -- (S);
+
+    % Cạnh AB, BC thấy
+    \draw (A) -- (B) -- (C);
+
+    % Cạnh bên SA
+    \draw (S) -- (A);
+    % Cạnh bên SB
+    \draw (S) -- (B);
+    % Cạnh bên SC
+    \draw (S) -- (C);
+    % Cạnh bên SD khuất
+    \draw[dashed, thin] (S) -- (D);
+
+    % Nhãn đỉnh S
+    \path (S)  node[above]       {$S$};
+    % Nhãn đỉnh A
+    \path (A)  node[below left]  {$A$};
+    % Nhãn đỉnh B
+    \path (B)  node[below right] {$B$};
+    % Nhãn đỉnh C
+    \path (C)  node[right]       {$C$};
+    % Nhãn đỉnh D
+    \path (D)  node[left]        {$D$};
+    % Nhãn tâm đáy O
+    \path (O') node[below right] {$O$};
+
+    % Điểm tại S, A, B, C, D, O'
+    \foreach \p in {S, A, B, C, D, O'} {
+        \fill (\p) circle (2pt);
+    }
+\end{tikzpicture}
+\end{document}

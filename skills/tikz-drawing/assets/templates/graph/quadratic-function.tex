@@ -1,0 +1,92 @@
+% Template: Đồ thị hàm số bậc hai y = ax² + bx + c
+% Dùng cho: parabol, đỉnh, nghiệm, trục đối xứng
+% y = x^2 - 2x - 3, đỉnh V(1;-4), nghiệm x=-1 và x=3
+% --------------------------------------------------------
+\documentclass[border=5pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+% ── Hệ màu tập trung (chỉnh tại đây để đổi theme) ──────────
+\usepackage{xcolor}
+\definecolor{mauchinh} {HTML}{1565C0}
+\definecolor{mauphu}   {HTML}{43A047}
+\definecolor{maunoibat}{HTML}{E53935}
+\definecolor{mauvien}  {HTML}{424242}
+\usetikzlibrary{calc, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+    % Khai báo hàm số bằng declare function
+    declare function={
+        % Hàm bậc hai y = x^2 - 2x - 3
+        f(\x) = \x*\x - 2*\x - 3;
+    },
+    scale=0.85,
+    >=Stealth,
+    line join=round,
+    line cap=round,
+    every node/.style={font=\sffamily\small, mauvien},
+]
+    % Giới hạn vẽ
+    \pgfmathsetmacro{\xmin}{-1.8}
+    \pgfmathsetmacro{\xmax}{3.8}
+    \pgfmathsetmacro{\ymin}{-4.8}
+    \pgfmathsetmacro{\ymax}{3.5}
+    % x đỉnh = -b/2a = 1
+    \pgfmathsetmacro{\xdinh}{1}
+    % y đỉnh = -4
+    \pgfmathsetmacro{\ydinh}{-4}
+
+    % Trục Ox
+    \draw[mauvien, ->] (\xmin, 0) -- (\xmax+0.3, 0) node[right] {$x$};
+    % Trục Oy
+    \draw[mauvien, ->] (0, \ymin) -- (0, \ymax+0.3) node[above] {$y$};
+    % Gốc tọa độ O
+    \path (0,0) node[below left] {$O$};
+
+    % Vạch và nhãn trục x
+    \foreach \x in {-1, 1, 2, 3} {
+        \draw[mauvien] (\x, 2pt) -- (\x, -2pt);
+        \path (\x, 0) node[below] {$\x$};
+    }
+
+    % Vạch và nhãn trục y
+    \foreach \y in {-4,-3,-2,-1,1,2,3} {
+        \draw[mauvien] (2pt, \y) -- (-2pt, \y);
+        \path (0, \y) node[left] {$\y$};
+    }
+
+    % Parabol y = f(x) dùng declare function
+    \draw[mauchinh, thick]
+        plot[domain=\xmin:\xmax, samples=120, variable=\x]
+        (\x, {f(\x)});
+
+    % Trục đối xứng x = xdinh (nét chấm gạch)
+    \draw[mauvien!40, dash dot, thin]
+        (\xdinh, \ymin) -- (\xdinh, \ymax);
+
+    % Nghiệm x1 = -1
+    \path (-1, 0) coordinate (X1);
+    \fill[maunoibat] (X1) circle (2.5pt);
+    % Nghiệm x2 = 3
+    \path (3, 0) coordinate (X2);
+    \fill[maunoibat] (X2) circle (2.5pt);
+
+    % Điểm đỉnh V(1; -4)
+    \path (\xdinh, \ydinh) coordinate (V);
+    \fill[mauphu] (V) circle (2.5pt);
+    % Nhãn đỉnh
+    \path (V) node[right] {$V(\xdinh;\ydinh)$};
+
+    % Đường chiếu đỉnh xuống Ox
+    \draw[mauvien!40, dotted, thin] (\xdinh, 0) -- (V);
+    % Đường chiếu đỉnh sang Oy
+    \draw[mauvien!40, dotted, thin] (0, \ydinh) -- (V);
+
+    % Nhãn hàm số
+    \path (2.8, 2.5) node[mauchinh, right] {$y = x^2 - 2x - 3$};
+\end{tikzpicture}
+\end{document}
